@@ -146,11 +146,22 @@ DIRECT3D::DIRECT3D(HWND hwnd):
 
   GetClientRect(m_hwnd, &client);
 
-  // target = client;
+  target = client;
+#if 0
   target.left = client.left;
   target.top = client.top;
   target.right = client.right / 2;
   target.bottom = client.bottom / 2;
+#endif
+
+#if 1
+  RECT destRect;
+  destRect.left = client.left;
+  destRect.top = client.top;
+  destRect.right = client.right / 2;
+  destRect.bottom = client.bottom / 2;
+#endif
+
 
   //
   // Initialize VPBlt parameters.
@@ -196,7 +207,7 @@ DIRECT3D::DIRECT3D(HWND hwnd):
   samples[0].SrcRect = g_SrcRect;
 
   // DXVA2_VideoProcess_StretchX, Y
-  samples[0].DstRect = ScaleRectangle(g_DstRect, VIDEO_MAIN_RECT, client);
+  samples[0].DstRect = destRect; // ScaleRectangle(g_DstRect, VIDEO_MAIN_RECT, client);
 
   // DXVA2_VideoProcess_PlanarAlpha
   samples[0].PlanarAlpha = DXVA2FloatToFixed(float(0xFF) / 0xFF);
